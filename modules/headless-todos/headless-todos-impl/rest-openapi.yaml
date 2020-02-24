@@ -1,0 +1,191 @@
+components:
+  schemas:
+    TodoItem:
+      description: Contains all of the data for a single todo item.
+      properties:
+        name:
+          description: The todo item name.
+          type: string
+        id:
+          description: The todoitem internal ID.
+          type: string
+        description:
+          description: The description of the todo item.
+          type: string
+        priority:
+          description: The priority of the todo item.
+          enum: [Hight, Normal, Low]
+          type: string
+        creator:
+          $ref: "#/components/schemas/Creator"
+      type: object
+    Creator:
+      description: Represents the user account of the content's creator/author. Properties follow the [creator](https://schema.org/creator) specification.
+      properties:
+        additionalName:
+          description: The author's additional name (e.g., middle name).
+          readOnly: true
+          type: string
+        familyName:
+          description: The author's surname.
+          readOnly: true
+          type: string
+        givenName:
+          description: The author's first name.
+          readOnly: true
+          type: string
+        id:
+          description: The author's ID.
+          format: int64
+          readOnly: true
+          type: integer
+        image:
+          description: A relative URL to the author's profile image.
+          format: uri
+          readOnly: true
+          type: string
+        name:
+          description: The author's full name.
+          readOnly: true
+          type: string
+        profileURL:
+          description: A relative URL to the author's user profile.
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+openapi: 3.0.1
+info:
+  description: "API for accessing Todos details."
+  license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  title: "Headless Todos"
+  version: v1.0
+paths:
+  "/todos":
+    get:
+      operationId: getTodosPage
+      tags: ["TodoItem"]
+      description: Retrieves the list of todo items. Results can be paginated, filtered, searched, and sorted.
+      parameters:
+        - in: query
+          name: filter
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+        - in: query
+          name: search
+          schema:
+            type: string
+        - in: query
+          name: sort
+          schema:
+            type: string
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+                type: array
+            application/xml:
+              schema:
+                items:
+                  $ref: "#/components/schemas/TodoItem"
+                type: array
+    post:
+      operationId: postTodo
+      tags: ["TodoItem"]
+      description: Create a new todo item.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoItem"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/TodoItem"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+  "/todos/{todoItemId}":
+    get:
+      operationId: getTodoTodoItem
+      tags: ["TodoItem"]
+      description: Retrieves the todo item by its ID.
+      parameters:
+        - name: todoItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+    put:
+      operationId: putTodoTodoItem
+      tags: ["TodoItem"]
+      description: Replaces the todo item with the information sent in the request body. Any missing fields are deleted, unless they are required.
+      parameters:
+        - name: todoItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoItem"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/TodoItem"
+      responses:
+        200:
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+    delete:
+      operationId: deleteTodoTodoItem
+      tags: ["TodoItem"]
+      description: Deletes the todoItem and returns a 204 if the operation succeeds.
+      parameters:
+        - name: todoItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: ""
+          content:
+            application/json: {}

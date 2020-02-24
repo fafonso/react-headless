@@ -1,0 +1,9 @@
+apiDir: "../headless-todos-api/src/main/java"
+apiPackagePath: "com.liferay.jbrychta.headless.todos"
+application:
+  baseURI: "/headless-todos"
+  className: "HeadlessTodosApplication"
+  name: "jbrychta.Headless.Todos"
+author: "Jan Brychta"
+clientDir: "../headless-todos-client/src/main/java"
+testDir: "../headless-todos-test/src/testIntegration/java"

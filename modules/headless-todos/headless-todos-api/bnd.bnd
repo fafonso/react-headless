@@ -1,0 +1,6 @@
+Bundle-Name: headless-todos-api
+Bundle-SymbolicName: com.liferay.jbrychta.headless.todos.api
+Bundle-Version: 1.0.0
+
+Export-Package: com.liferay.jbrychta.headless.todos.dto.v1_0, \
+    com.liferay.jbrychta.headless.todos.resource.v1_0

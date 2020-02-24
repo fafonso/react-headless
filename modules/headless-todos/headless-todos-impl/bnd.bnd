@@ -1,0 +1,4 @@
+Bundle-Name: headless-todos-impl
+Bundle-SymbolicName: com.liferay.jbrychta.headless.todos.impl
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.jbrychta.headless.todos
