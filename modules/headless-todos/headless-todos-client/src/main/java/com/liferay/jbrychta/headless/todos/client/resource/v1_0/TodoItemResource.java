@@ -19,12 +19,12 @@ import javax.annotation.Generated;
 public class TodoItemResource {
 
 	public static Page<TodoItem> getTodosPage(
-			String search, String filterString, Pagination pagination,
-			String sortString)
+			Integer companyId, Integer groupId, String keywords,
+			String filterString, Pagination pagination, String sortString)
 		throws Exception {
 
 		HttpInvoker.HttpResponse httpResponse = getTodosPageHttpResponse(
-			search, filterString, pagination, sortString);
+			companyId, groupId, keywords, filterString, pagination, sortString);
 
 		String content = httpResponse.getContent();
 
@@ -38,16 +38,24 @@ public class TodoItemResource {
 	}
 
 	public static HttpInvoker.HttpResponse getTodosPageHttpResponse(
-			String search, String filterString, Pagination pagination,
-			String sortString)
+			Integer companyId, Integer groupId, String keywords,
+			String filterString, Pagination pagination, String sortString)
 		throws Exception {
 
 		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
 		httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
 
-		if (search != null) {
-			httpInvoker.parameter("search", String.valueOf(search));
+		if (companyId != null) {
+			httpInvoker.parameter("companyId", String.valueOf(companyId));
+		}
+
+		if (groupId != null) {
+			httpInvoker.parameter("groupId", String.valueOf(groupId));
+		}
+
+		if (keywords != null) {
+			httpInvoker.parameter("keywords", String.valueOf(keywords));
 		}
 
 		if (filterString != null) {
@@ -111,7 +119,9 @@ public class TodoItemResource {
 		return httpInvoker.invoke();
 	}
 
-	public static void deleteTodoTodoItem(String todoItemId) throws Exception {
+	public static TodoItem deleteTodoTodoItem(Integer todoItemId)
+		throws Exception {
+
 		HttpInvoker.HttpResponse httpResponse = deleteTodoTodoItemHttpResponse(
 			todoItemId);
 
@@ -122,10 +132,21 @@ public class TodoItemResource {
 		_logger.fine("HTTP response message: " + httpResponse.getMessage());
 		_logger.fine(
 			"HTTP response status code: " + httpResponse.getStatusCode());
+
+		try {
+			return TodoItemSerDes.toDTO(content);
+		}
+		catch (Exception e) {
+			_logger.log(
+				Level.WARNING, "Unable to process HTTP response: " + content,
+				e);
+
+			throw e;
+		}
 	}
 
 	public static HttpInvoker.HttpResponse deleteTodoTodoItemHttpResponse(
-			String todoItemId)
+			Integer todoItemId)
 		throws Exception {
 
 		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -141,7 +162,9 @@ public class TodoItemResource {
 		return httpInvoker.invoke();
 	}
 
-	public static TodoItem getTodoTodoItem(String todoItemId) throws Exception {
+	public static TodoItem getTodoTodoItem(Integer todoItemId)
+		throws Exception {
+
 		HttpInvoker.HttpResponse httpResponse = getTodoTodoItemHttpResponse(
 			todoItemId);
 
@@ -166,7 +189,7 @@ public class TodoItemResource {
 	}
 
 	public static HttpInvoker.HttpResponse getTodoTodoItemHttpResponse(
-			String todoItemId)
+			Integer todoItemId)
 		throws Exception {
 
 		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();

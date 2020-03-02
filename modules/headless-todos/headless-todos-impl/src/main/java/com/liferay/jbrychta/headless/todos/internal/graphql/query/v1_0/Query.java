@@ -39,7 +39,9 @@ public class Query {
 	@GraphQLField
 	@GraphQLInvokeDetached
 	public Collection<TodoItem> getTodosPage(
-			@GraphQLName("search") String search,
+			@GraphQLName("companyId") Integer companyId,
+			@GraphQLName("groupId") Integer groupId,
+			@GraphQLName("keywords") String keywords,
 			@GraphQLName("filter") Filter filter,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
@@ -50,7 +52,8 @@ public class Query {
 			this::_populateResourceContext,
 			todoItemResource -> {
 				Page paginationPage = todoItemResource.getTodosPage(
-					search, filter, Pagination.of(pageSize, page), sorts);
+					companyId, groupId, keywords, filter,
+					Pagination.of(pageSize, page), sorts);
 
 				return paginationPage.getItems();
 			});
@@ -59,7 +62,7 @@ public class Query {
 	@GraphQLField
 	@GraphQLInvokeDetached
 	public TodoItem getTodoTodoItem(
-			@GraphQLName("todoItemId") String todoItemId)
+			@GraphQLName("todoItemId") Integer todoItemId)
 		throws Exception {
 
 		return _applyComponentServiceObjects(

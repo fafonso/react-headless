@@ -39,6 +39,16 @@ public class TodoItemSerDes {
 
 		sb.append("{");
 
+		if (todoItem.getCompanyId() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"companyId\": ");
+
+			sb.append(todoItem.getCompanyId());
+		}
+
 		if (todoItem.getCreator() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -63,6 +73,16 @@ public class TodoItemSerDes {
 			sb.append("\"");
 		}
 
+		if (todoItem.getGroupId() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"groupId\": ");
+
+			sb.append(todoItem.getGroupId());
+		}
+
 		if (todoItem.getId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -70,11 +90,7 @@ public class TodoItemSerDes {
 
 			sb.append("\"id\": ");
 
-			sb.append("\"");
-
-			sb.append(_escape(todoItem.getId()));
-
-			sb.append("\"");
+			sb.append(todoItem.getId());
 		}
 
 		if (todoItem.getName() != null) {
@@ -123,6 +139,13 @@ public class TodoItemSerDes {
 
 		Map<String, String> map = new HashMap<>();
 
+		if (todoItem.getCompanyId() == null) {
+			map.put("companyId", null);
+		}
+		else {
+			map.put("companyId", String.valueOf(todoItem.getCompanyId()));
+		}
+
 		if (todoItem.getCreator() == null) {
 			map.put("creator", null);
 		}
@@ -135,6 +158,13 @@ public class TodoItemSerDes {
 		}
 		else {
 			map.put("description", String.valueOf(todoItem.getDescription()));
+		}
+
+		if (todoItem.getGroupId() == null) {
+			map.put("groupId", null);
+		}
+		else {
+			map.put("groupId", String.valueOf(todoItem.getGroupId()));
 		}
 
 		if (todoItem.getId() == null) {
@@ -213,7 +243,13 @@ public class TodoItemSerDes {
 			TodoItem todoItem, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "creator")) {
+			if (Objects.equals(jsonParserFieldName, "companyId")) {
+				if (jsonParserFieldValue != null) {
+					todoItem.setCompanyId(
+						Integer.valueOf((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "creator")) {
 				if (jsonParserFieldValue != null) {
 					todoItem.setCreator(
 						CreatorSerDes.toDTO((String)jsonParserFieldValue));
@@ -224,9 +260,16 @@ public class TodoItemSerDes {
 					todoItem.setDescription((String)jsonParserFieldValue);
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "groupId")) {
+				if (jsonParserFieldValue != null) {
+					todoItem.setGroupId(
+						Integer.valueOf((String)jsonParserFieldValue));
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "id")) {
 				if (jsonParserFieldValue != null) {
-					todoItem.setId((String)jsonParserFieldValue);
+					todoItem.setId(
+						Integer.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "name")) {

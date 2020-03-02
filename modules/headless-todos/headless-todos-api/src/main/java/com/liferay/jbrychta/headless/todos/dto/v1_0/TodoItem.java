@@ -66,6 +66,34 @@ public class TodoItem {
 
 	}
 
+	@Schema(description = "company internal ID.")
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
+	@JsonIgnore
+	public void setCompanyId(
+		UnsafeSupplier<Integer, Exception> companyIdUnsafeSupplier) {
+
+		try {
+			companyId = companyIdUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Integer companyId;
+
 	@Schema
 	public Creator getCreator() {
 		return creator;
@@ -122,17 +150,45 @@ public class TodoItem {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String description;
 
+	@Schema(description = "group internal ID.")
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+	@JsonIgnore
+	public void setGroupId(
+		UnsafeSupplier<Integer, Exception> groupIdUnsafeSupplier) {
+
+		try {
+			groupId = groupIdUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Integer groupId;
+
 	@Schema(description = "The todoitem internal ID.")
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	@JsonIgnore
-	public void setId(UnsafeSupplier<String, Exception> idUnsafeSupplier) {
+	public void setId(UnsafeSupplier<Integer, Exception> idUnsafeSupplier) {
 		try {
 			id = idUnsafeSupplier.get();
 		}
@@ -146,7 +202,7 @@ public class TodoItem {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String id;
+	protected Integer id;
 
 	@Schema(description = "The todo item name.")
 	public String getName() {
@@ -238,6 +294,16 @@ public class TodoItem {
 
 		sb.append("{");
 
+		if (companyId != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"companyId\": ");
+
+			sb.append(companyId);
+		}
+
 		if (creator != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -262,6 +328,16 @@ public class TodoItem {
 			sb.append("\"");
 		}
 
+		if (groupId != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"groupId\": ");
+
+			sb.append(groupId);
+		}
+
 		if (id != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -269,11 +345,7 @@ public class TodoItem {
 
 			sb.append("\"id\": ");
 
-			sb.append("\"");
-
-			sb.append(_escape(id));
-
-			sb.append("\"");
+			sb.append(id);
 		}
 
 		if (name != null) {

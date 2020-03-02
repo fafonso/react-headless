@@ -12,7 +12,7 @@
  * details.
  */
 
-import React, {fetch} from 'react';
+import React from 'react';
 
 const HEADERS = {
 	Accept: 'application/json',
@@ -36,13 +36,6 @@ const parseResponse = response =>
 		}
 	});
 
-export const addItem = (endpoint, item) =>
-	fetch(getURL(endpoint), {
-		body: JSON.stringify(item),
-		headers: HEADERS,
-		method: 'POST'
-	}).then(response => parseResponse(response));
-
 export const confirmDelete = endpoint => item =>
 	new Promise((resolve, reject) => {
 		const confirmed = confirm(
@@ -63,6 +56,13 @@ export const deleteItem = endpoint =>
 	fetch(getURL(endpoint), {
 		headers: HEADERS,
 		method: 'DELETE'
+	}).then(response => parseResponse(response));
+
+export const addItem = (endpoint, item) =>
+	fetch(getURL(endpoint), {
+		body: JSON.stringify(item),
+		headers: HEADERS,
+		method: 'POST'
 	}).then(response => parseResponse(response));
 
 export const getItem = (endpoint, params) =>

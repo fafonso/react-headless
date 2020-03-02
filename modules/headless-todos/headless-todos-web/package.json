@@ -16,6 +16,7 @@
 		"webpack-dev-server": "3.2.1"
 	},
 	"dependencies": {
+		"@clayui/alert": "^3.2.0",
 		"@clayui/button": "^3.2.0",
 		"@clayui/data-provider": "^3.0.7",
 		"@clayui/drop-down": "^3.2.0",

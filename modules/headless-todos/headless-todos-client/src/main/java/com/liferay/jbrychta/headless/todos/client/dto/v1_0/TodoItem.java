@@ -45,6 +45,27 @@ public class TodoItem {
 
 	}
 
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
+	public void setCompanyId(
+		UnsafeSupplier<Integer, Exception> companyIdUnsafeSupplier) {
+
+		try {
+			companyId = companyIdUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Integer companyId;
+
 	public Creator getCreator() {
 		return creator;
 	}
@@ -87,15 +108,36 @@ public class TodoItem {
 
 	protected String description;
 
-	public String getId() {
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+	public void setGroupId(
+		UnsafeSupplier<Integer, Exception> groupIdUnsafeSupplier) {
+
+		try {
+			groupId = groupIdUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Integer groupId;
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setId(UnsafeSupplier<String, Exception> idUnsafeSupplier) {
+	public void setId(UnsafeSupplier<Integer, Exception> idUnsafeSupplier) {
 		try {
 			id = idUnsafeSupplier.get();
 		}
@@ -104,7 +146,7 @@ public class TodoItem {
 		}
 	}
 
-	protected String id;
+	protected Integer id;
 
 	public String getName() {
 		return name;

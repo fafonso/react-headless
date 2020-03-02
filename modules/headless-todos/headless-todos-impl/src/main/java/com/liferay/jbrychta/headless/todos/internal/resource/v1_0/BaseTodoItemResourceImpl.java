@@ -53,7 +53,9 @@ public abstract class BaseTodoItemResourceImpl implements TodoItemResource {
 	)
 	@Parameters(
 		value = {
-			@Parameter(in = ParameterIn.QUERY, name = "search"),
+			@Parameter(in = ParameterIn.QUERY, name = "companyId"),
+			@Parameter(in = ParameterIn.QUERY, name = "groupId"),
+			@Parameter(in = ParameterIn.QUERY, name = "keywords"),
 			@Parameter(in = ParameterIn.QUERY, name = "filter"),
 			@Parameter(in = ParameterIn.QUERY, name = "page"),
 			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
@@ -64,7 +66,10 @@ public abstract class BaseTodoItemResourceImpl implements TodoItemResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TodoItem")})
 	public Page<TodoItem> getTodosPage(
-			@Parameter(hidden = true) @QueryParam("search") String search,
+			@Parameter(hidden = true) @QueryParam("companyId") Integer
+				companyId,
+			@Parameter(hidden = true) @QueryParam("groupId") Integer groupId,
+			@Parameter(hidden = true) @QueryParam("keywords") String keywords,
 			@Context Filter filter, @Context Pagination pagination,
 			@Context Sort[] sorts)
 		throws Exception {
@@ -92,12 +97,14 @@ public abstract class BaseTodoItemResourceImpl implements TodoItemResource {
 		value = {@Parameter(in = ParameterIn.PATH, name = "todoItemId")}
 	)
 	@Path("/todos/{todoItemId}")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TodoItem")})
-	public void deleteTodoTodoItem(
-			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") String
+	public TodoItem deleteTodoTodoItem(
+			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") Integer
 				todoItemId)
 		throws Exception {
+
+		return new TodoItem();
 	}
 
 	@Override
@@ -110,7 +117,7 @@ public abstract class BaseTodoItemResourceImpl implements TodoItemResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TodoItem")})
 	public TodoItem getTodoTodoItem(
-			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") String
+			@NotNull @Parameter(hidden = true) @PathParam("todoItemId") Integer
 				todoItemId)
 		throws Exception {
 

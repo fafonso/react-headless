@@ -5,6 +5,7 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import UserEntries from '../../entry/UserEntries';
 
 
+
 const Tabs = () => {
    const [activeTabKeyValue, setActiveTabKeyValue] = useState(0);
 
@@ -41,13 +42,7 @@ const Tabs = () => {
            </ClayTabs>
            <ClayTabs.Content activeIndex={activeTabKeyValue} fade>
              <ClayTabs.TabPane aria-labelledby="tab-1">
-
-                 <Router>
-                     <Switch>
-                         <Route component={UserEntries} exact path="/" />
-                     </Switch>
-                 </Router>
-
+                <UserEntries />
              </ClayTabs.TabPane>
              <ClayTabs.TabPane aria-labelledby="tab-2">
                {`2. Proin efficitur imperdiet dolor, a iaculis orci lacinia eu. Proin pulvinar facilisis purus vitae ornare. Donec ut sodales sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec id volutpat ligula. Sed sodales pellentesque aliquam. Donec interdum a mi ac auctor. Etiam auctor lacus nec posuere feugiat. Maecenas pulvinar ante nisl, auctor fringilla quam molestie eu. Sed non ultrices est. Ut congue leo in placerat pharetra.`}

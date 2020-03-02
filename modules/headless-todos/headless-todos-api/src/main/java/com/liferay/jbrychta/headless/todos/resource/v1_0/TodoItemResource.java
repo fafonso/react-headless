@@ -21,14 +21,15 @@ import javax.annotation.Generated;
 public interface TodoItemResource {
 
 	public Page<TodoItem> getTodosPage(
-			String search, Filter filter, Pagination pagination, Sort[] sorts)
+			Integer companyId, Integer groupId, String keywords, Filter filter,
+			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
 	public TodoItem postTodo(TodoItem todoItem) throws Exception;
 
-	public void deleteTodoTodoItem(String todoItemId) throws Exception;
+	public TodoItem deleteTodoTodoItem(Integer todoItemId) throws Exception;
 
-	public TodoItem getTodoTodoItem(String todoItemId) throws Exception;
+	public TodoItem getTodoTodoItem(Integer todoItemId) throws Exception;
 
 	public TodoItem putTodoTodoItem(String todoItemId, TodoItem todoItem)
 		throws Exception;

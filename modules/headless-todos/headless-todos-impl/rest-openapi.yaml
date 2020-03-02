@@ -8,7 +8,13 @@ components:
           type: string
         id:
           description: The todoitem internal ID.
-          type: string
+          type: integer
+        companyId:
+          description: company internal ID.
+          type: integer
+        groupId:
+          description: group internal ID.
+          type: integer
         description:
           description: The description of the todo item.
           type: string
@@ -58,8 +64,8 @@ openapi: 3.0.1
 info:
   description: "API for accessing Todos details."
   license:
-        name: "Apache 2.0"
-        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
   title: "Headless Todos"
   version: v1.0
 paths:
@@ -69,6 +75,14 @@ paths:
       tags: ["TodoItem"]
       description: Retrieves the list of todo items. Results can be paginated, filtered, searched, and sorted.
       parameters:
+        - in: query
+          name: companyId
+          schema:
+            type: integer
+        - in: query
+          name: groupId
+          schema:
+            type: integer
         - in: query
           name: filter
           schema:
@@ -82,7 +96,7 @@ paths:
           schema:
             type: integer
         - in: query
-          name: search
+          name: keywords
           schema:
             type: string
         - in: query
@@ -135,7 +149,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         200:
           description: ""
@@ -183,9 +197,14 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         204:
           description: ""
           content:
-            application/json: {}
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodoItem"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/TodoItem"

@@ -42,10 +42,11 @@ public class Mutation {
 	}
 
 	@GraphQLInvokeDetached
-	public void deleteTodoTodoItem(@GraphQLName("todoItemId") String todoItemId)
+	public TodoItem deleteTodoTodoItem(
+			@GraphQLName("todoItemId") Integer todoItemId)
 		throws Exception {
 
-		_applyVoidComponentServiceObjects(
+		return _applyComponentServiceObjects(
 			_todoItemResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			todoItemResource -> todoItemResource.deleteTodoTodoItem(

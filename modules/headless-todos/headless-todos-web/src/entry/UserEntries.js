@@ -1,35 +1,25 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Loading} from '../components/loading/Loading';
 import {Link, withRouter} from 'react-router-dom';
-
-
-
+import {confirmDelete, getItem, deleteItem, getURL} from '../utils/client';
 import ListView from '../components/list-view/ListView';
 
 const UserEntries = withRouter(({history, location}) => {
 
-    const [state, setState] = useState({
-        dataDefinition: null,
-        dataListView: {
-            fieldNames: []
-        },
-        isLoading: false
-    });
+    const baseApiURL = '/o/headless-todos/v1.0/todos/';
 
-    const { isLoading } = state;
+    const removeItem = ({item}) =>{
+       const deleteURL = baseApiURL +item.id;
 
-    const actions = [];
+       deleteItem(deleteURL).then((savedVal) => {
+            history.push("/");
+       });
+    }
 
    return (
-       <div>
-
-            <Loading isLoading={isLoading}>
-                <ListView endpoint={'/o/headless-todos/v1.0/todos'}
-                          actions={actions}>
-                </ListView>
-            </Loading>
-        </div>
+        <ListView endpoint={baseApiURL} removeItem={removeItem} />
    );
+
  });
 
  export default UserEntries;

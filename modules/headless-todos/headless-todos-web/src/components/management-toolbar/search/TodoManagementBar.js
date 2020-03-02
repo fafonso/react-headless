@@ -1,5 +1,7 @@
 const spritemap = '/o/classic-theme/images/clay/icons.svg';
 
+import React, {useContext} from 'react';
+import {withRouter, Link} from 'react-router-dom';
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import {ClayCheckbox, ClayInput} from '@clayui/form';
@@ -8,11 +10,7 @@ import ClayLabel from '@clayui/label';
 import ClayManagementToolbar, {
 	ClayResultsBar,
 } from '@clayui/management-toolbar';
-
 import SearchContext from '../search/SearchContext';
-
-import React, {useContext} from 'react';
-
 
 const TodoManagementBar = () => {
 
@@ -20,16 +18,20 @@ const TodoManagementBar = () => {
 
 
     const _handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            var value = e.target.value;
-            dispatch({keywords: value, type: 'SEARCH'})
-        }
+
+        var value = e.target.value;
+        dispatch({keywords: value, type: 'SEARCH'})
+
+//        if (e.key === 'Enter') {
+//
+//        }
         return false;
     }
 
     return (
         <div>
             <ClayManagementToolbar>
+                 <ClayManagementToolbar.ItemList>
                      <ClayManagementToolbar.Search showMobile={false}>
                           <ClayInput.Group>
                                 <ClayInput.GroupItem>
@@ -38,7 +40,10 @@ const TodoManagementBar = () => {
                                         className="form-control input-group-inset input-group-inset-after"
                                         defaultValue=""
                                         type="text"
-                                        onKeyDown={_handleKeyDown}
+                                        onKeyPress={_handleKeyDown}
+                                        onChange={_handleKeyDown}
+                                        onPaste={_handleKeyDown}
+                                        onInput={_handleKeyDown}
                                       />
                                        <ClayInput.GroupInsetItem after tag="span">
                                                       <ClayButtonWithIcon
@@ -53,11 +58,18 @@ const TodoManagementBar = () => {
                                 </ClayInput.GroupItem>
                           </ClayInput.Group>
                      </ClayManagementToolbar.Search>
-
-
+                         <ClayManagementToolbar.Item>
+                             <Link to='/entries/-1'>
+                                   <ClayButtonWithIcon
+                                        className="nav-btn nav-btn-monospaced"
+                                        spritemap={spritemap}
+                                        symbol="plus"
+                                    />
+                             </Link>
+                         </ClayManagementToolbar.Item>
+                 </ClayManagementToolbar.ItemList>
             </ClayManagementToolbar>
         </div>
-
     );
 };
 

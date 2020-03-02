@@ -137,7 +137,7 @@ public abstract class BaseTodoItemResourceTestCase {
 		TodoItem todoItem2 = testGetTodosPage_addTodoItem(randomTodoItem());
 
 		Page<TodoItem> page = TodoItemResource.getTodosPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -162,7 +162,8 @@ public abstract class BaseTodoItemResourceTestCase {
 
 		for (EntityField entityField : entityFields) {
 			Page<TodoItem> page = TodoItemResource.getTodosPage(
-				null, getFilterString(entityField, "between", todoItem1),
+				null, null, null,
+				getFilterString(entityField, "between", todoItem1),
 				Pagination.of(1, 2), null);
 
 			assertEquals(
@@ -187,7 +188,7 @@ public abstract class BaseTodoItemResourceTestCase {
 
 		for (EntityField entityField : entityFields) {
 			Page<TodoItem> page = TodoItemResource.getTodosPage(
-				null, getFilterString(entityField, "eq", todoItem1),
+				null, null, null, getFilterString(entityField, "eq", todoItem1),
 				Pagination.of(1, 2), null);
 
 			assertEquals(
@@ -205,14 +206,14 @@ public abstract class BaseTodoItemResourceTestCase {
 		TodoItem todoItem3 = testGetTodosPage_addTodoItem(randomTodoItem());
 
 		Page<TodoItem> page1 = TodoItemResource.getTodosPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, null, null, Pagination.of(1, 2), null);
 
 		List<TodoItem> todoItems1 = (List<TodoItem>)page1.getItems();
 
 		Assert.assertEquals(todoItems1.toString(), 2, todoItems1.size());
 
 		Page<TodoItem> page2 = TodoItemResource.getTodosPage(
-			null, null, Pagination.of(2, 2), null);
+			null, null, null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -254,7 +255,7 @@ public abstract class BaseTodoItemResourceTestCase {
 
 		for (EntityField entityField : entityFields) {
 			Page<TodoItem> ascPage = TodoItemResource.getTodosPage(
-				null, null, Pagination.of(1, 2),
+				null, null, null, null, Pagination.of(1, 2),
 				entityField.getName() + ":asc");
 
 			assertEquals(
@@ -262,7 +263,7 @@ public abstract class BaseTodoItemResourceTestCase {
 				(List<TodoItem>)ascPage.getItems());
 
 			Page<TodoItem> descPage = TodoItemResource.getTodosPage(
-				null, null, Pagination.of(1, 2),
+				null, null, null, null, Pagination.of(1, 2),
 				entityField.getName() + ":desc");
 
 			assertEquals(
@@ -294,7 +295,7 @@ public abstract class BaseTodoItemResourceTestCase {
 
 		for (EntityField entityField : entityFields) {
 			Page<TodoItem> ascPage = TodoItemResource.getTodosPage(
-				null, null, Pagination.of(1, 2),
+				null, null, null, null, Pagination.of(1, 2),
 				entityField.getName() + ":asc");
 
 			assertEquals(
@@ -302,7 +303,7 @@ public abstract class BaseTodoItemResourceTestCase {
 				(List<TodoItem>)ascPage.getItems());
 
 			Page<TodoItem> descPage = TodoItemResource.getTodosPage(
-				null, null, Pagination.of(1, 2),
+				null, null, null, null, Pagination.of(1, 2),
 				entityField.getName() + ":desc");
 
 			assertEquals(
@@ -454,6 +455,14 @@ public abstract class BaseTodoItemResourceTestCase {
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
+			if (Objects.equals("companyId", additionalAssertFieldName)) {
+				if (todoItem.getCompanyId() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("creator", additionalAssertFieldName)) {
 				if (todoItem.getCreator() == null) {
 					valid = false;
@@ -464,6 +473,14 @@ public abstract class BaseTodoItemResourceTestCase {
 
 			if (Objects.equals("description", additionalAssertFieldName)) {
 				if (todoItem.getDescription() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("groupId", additionalAssertFieldName)) {
+				if (todoItem.getGroupId() == null) {
 					valid = false;
 				}
 
@@ -523,6 +540,16 @@ public abstract class BaseTodoItemResourceTestCase {
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
+			if (Objects.equals("companyId", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						todoItem1.getCompanyId(), todoItem2.getCompanyId())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("creator", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						todoItem1.getCreator(), todoItem2.getCreator())) {
@@ -537,6 +564,16 @@ public abstract class BaseTodoItemResourceTestCase {
 				if (!Objects.deepEquals(
 						todoItem1.getDescription(),
 						todoItem2.getDescription())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("groupId", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						todoItem1.getGroupId(), todoItem2.getGroupId())) {
 
 					return false;
 				}
@@ -625,6 +662,11 @@ public abstract class BaseTodoItemResourceTestCase {
 		sb.append(operator);
 		sb.append(" ");
 
+		if (entityFieldName.equals("companyId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("creator")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -638,12 +680,14 @@ public abstract class BaseTodoItemResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("id")) {
-			sb.append("'");
-			sb.append(String.valueOf(todoItem.getId()));
-			sb.append("'");
+		if (entityFieldName.equals("groupId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
 
-			return sb.toString();
+		if (entityFieldName.equals("id")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
 		}
 
 		if (entityFieldName.equals("name")) {
@@ -667,7 +711,6 @@ public abstract class BaseTodoItemResourceTestCase {
 		return new TodoItem() {
 			{
 				description = RandomTestUtil.randomString();
-				id = RandomTestUtil.randomString();
 				name = RandomTestUtil.randomString();
 			}
 		};
