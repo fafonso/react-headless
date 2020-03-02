@@ -22,21 +22,15 @@ const TableWithPagination = ({items, openDetail, removeItem, totalCount}) => {
                 <ClayList.ItemTitle>{item.name}</ClayList.ItemTitle>
                 <ClayList.ItemText>{item.description}</ClayList.ItemText>
             </ClayList.ItemField>
-            <ClayList.ItemField>
+                <ClayList.ItemField>
                       <ClayList.QuickActionMenu>
-                        <ClayList.QuickActionMenu.Item
-                          onClick={() => removeItem({item})}
-                          spritemap={spritemap}
-                          symbol="trash"
-                        />
-
                         <ClayList.QuickActionMenu.Item
                           onClick={()=> openDetail({item})}
                           spritemap={spritemap}
                           symbol="cog"
                         />
                       </ClayList.QuickActionMenu>
-                    </ClayList.ItemField>
+                </ClayList.ItemField>
          </ClayList.Item>
     );
 

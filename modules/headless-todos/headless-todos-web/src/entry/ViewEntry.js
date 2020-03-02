@@ -5,7 +5,7 @@ import React, {useContext, useEffect, useState, useRef} from 'react';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayButton from '@clayui/button';
 import {useResource} from '@clayui/data-provider';
-import {confirmDelete, getItem, addItem, getURL} from '../utils/client';
+import {confirmDelete, getItem, addItem, deleteItem, getURL} from '../utils/client';
 import ClayAlert from '@clayui/alert';
 import {Link, withRouter} from 'react-router-dom';
 
@@ -21,10 +21,6 @@ const ViewEntry =  withRouter(({history, location, match}) =>  {
           }));
 
     const [toastItems, setToastItems] = useState([]);
-
-
-
-
 
     const id = match.params.id;
     const endpoint = '/o/headless-todos/v1.0/todos/' + id;
@@ -44,6 +40,12 @@ const ViewEntry =  withRouter(({history, location, match}) =>  {
                     networkStatus: status
                   })
         });
+
+    const removeItem = () =>{
+       deleteItem(endpoint).then((savedVal) => {
+            history.push("/");
+       });
+    }
 
     if(resource){
         nameInputRef.current.value = resource.name;
@@ -102,6 +104,7 @@ const ViewEntry =  withRouter(({history, location, match}) =>  {
               <ClayButton.Group>
                 <ClayButton displayType="primary" type="submit">Save</ClayButton>
                 <ClayButton displayType="secondary" type="button" onClick={history.goBack}>Cancel</ClayButton>
+                <ClayButton displayType="secondary" type="button" onClick={removeItem}>Delete</ClayButton>
               </ClayButton.Group>
             </ClayForm>
         <ClayAlert.ToastContainer>

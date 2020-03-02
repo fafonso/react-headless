@@ -75,7 +75,7 @@ export default withRouter(
         return (
             <SearchContext.Provider value={[query, dispatch]}>
                 <TodoManagementBar />
-                <TableWithPagination items={items} openDetail={openDetail} removeItem={removeItem} totalCount={totalCount} />
+                <TableWithPagination items={items} openDetail={openDetail} totalCount={totalCount} />
             </SearchContext.Provider>
         );
     }

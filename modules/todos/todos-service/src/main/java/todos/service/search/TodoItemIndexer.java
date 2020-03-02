@@ -52,6 +52,7 @@ public class TodoItemIndexer extends BaseIndexer<TodoItem> {
 
         Document document = getBaseModelDocument(CLASS_NAME, todoItem);;
         document.addKeyword(Field.NAME, todoItem.getName());
+        document.addKeyword(Field.TITLE, todoItem.getName());
         document.addKeyword(Field.DESCRIPTION, todoItem.getDescription());
         document.addKeyword(Field.COMPANY_ID, todoItem.getCompanyId());
         document.addKeyword(FIELDS.TODO_ITEM_ID, todoItem.getTodoItemId());
@@ -148,12 +149,76 @@ public class TodoItemIndexer extends BaseIndexer<TodoItem> {
     @Override
     public void postProcessSearchQuery(BooleanQuery searchQuery, BooleanFilter fullQueryBooleanFilter, SearchContext searchContext) throws Exception {
 
+       BooleanQuery filterBooleanQuery = new BooleanQueryImpl();
 
-       addSearchTerm(searchQuery, searchContext, Field.NAME, false);
-       addSearchTerm(searchQuery, searchContext, Field.DESCRIPTION, false);
+       filterBooleanQuery.addExactTerm(Field.NAME, searchContext.getKeywords());
 
-       super.postProcessSearchQuery(searchQuery, fullQueryBooleanFilter, searchContext);
+        addExactFilterTerm(searchContext.getCompanyId(), Field.COMPANY_ID, filterBooleanQuery, searchContext );
+        addExactFilterTerm(searchContext.getGroupIds()[0], Field.GROUP_ID, filterBooleanQuery, searchContext );
+
+
+        searchQuery.add(filterBooleanQuery, BooleanClauseOccur.MUST);
     }
+
+    private boolean addExactFilterTerm(Object filtersParam, String fieldName, BooleanQuery searchQuery, SearchContext searchContext) throws Exception {
+        boolean added = false;
+
+        BooleanQuery fieldsBooleanQuery = new BooleanQueryImpl();
+
+        if(filtersParam != null) {
+            if(filtersParam instanceof Boolean){
+                BooleanQuery fieldBooleanQuery = new BooleanQueryImpl();
+                fieldBooleanQuery.addRequiredTerm(fieldName, (Boolean)filtersParam);
+
+                fieldsBooleanQuery.add(fieldBooleanQuery, BooleanClauseOccur.SHOULD);
+
+                added = true;
+            }
+            if(filtersParam instanceof String){
+                BooleanQuery fieldBooleanQuery = new BooleanQueryImpl();
+                fieldBooleanQuery.addRequiredTerm(fieldName, (String)filtersParam);
+
+                fieldsBooleanQuery.add(fieldBooleanQuery, BooleanClauseOccur.SHOULD);
+
+                added = true;
+            }
+
+            if(filtersParam instanceof Long){
+                BooleanQuery fieldBooleanQuery = new BooleanQueryImpl();
+                fieldBooleanQuery.addRequiredTerm(fieldName, (Long)filtersParam);
+
+                fieldsBooleanQuery.add(fieldBooleanQuery, BooleanClauseOccur.SHOULD);
+
+                added = true;
+            }
+        }
+
+        if(added) {
+            searchQuery.add(buildFullTextSearchQuery(fieldsBooleanQuery, searchContext), BooleanClauseOccur.MUST);
+        }
+
+        return added;
+    }
+
+    private BooleanQuery buildFullTextSearchQuery(BooleanQuery fieldBooleanQuery, SearchContext searchContext) throws Exception {
+
+        BooleanQuery searchFieldQuery = new BooleanQueryImpl();
+        addFulltextSearchTerms(searchFieldQuery , searchContext);
+
+        BooleanQuery fieldSearchBooleanQuery = new BooleanQueryImpl();
+        fieldSearchBooleanQuery.add(fieldBooleanQuery, BooleanClauseOccur.MUST);
+        fieldSearchBooleanQuery.add(searchFieldQuery, BooleanClauseOccur.MUST);
+
+        return fieldSearchBooleanQuery;
+    }
+
+    private void addFulltextSearchTerms(BooleanQuery searchQuery, SearchContext searchContext) throws Exception {
+        addSearchTerm(searchQuery, searchContext, Field.NAME, false);
+        addSearchTerm(searchQuery, searchContext, Field.DESCRIPTION, false);
+        addSearchTerm(searchQuery, searchContext, Field.TITLE, false);
+
+    }
+
 
     @Override
     public String getClassName() {

@@ -8,16 +8,9 @@ const UserEntries = withRouter(({history, location}) => {
 
     const baseApiURL = '/o/headless-todos/v1.0/todos/';
 
-    const removeItem = ({item}) =>{
-       const deleteURL = baseApiURL +item.id;
-
-       deleteItem(deleteURL).then((savedVal) => {
-            history.push("/");
-       });
-    }
 
    return (
-        <ListView endpoint={baseApiURL} removeItem={removeItem} />
+        <ListView endpoint={baseApiURL}  />
    );
 
  });
