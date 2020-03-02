@@ -1,0 +1,10 @@
+Bundle-Name: todos-api
+Bundle-SymbolicName: todos.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	todos.exception,\
+	todos.model,\
+	todos.service,\
+	todos.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../todos-service/service.xml
